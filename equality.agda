@@ -15,6 +15,9 @@ module equality where
   trans : ∀ {A} {x y z : A} -> x ≡ y -> y ≡ z -> x ≡ z
   trans refl refl = refl
 
+  subst : ∀ {A : Set} {P : A → Set} {x y} -> x ≡ y -> P x -> P y
+  subst refl px = px
+
   module ≡-Reasoning {A : Set} where
 
   infix  1 begin_
