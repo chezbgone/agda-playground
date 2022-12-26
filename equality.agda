@@ -18,22 +18,17 @@ module equality where
   subst : ∀ {A : Set} {P : A → Set} {x y} -> x ≡ y -> P x -> P y
   subst refl px = px
 
+
   module ≡-Reasoning {A : Set} where
 
-  infix  1 begin_
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
-  infix  3 _∎
+  infixl 1 equational-reasoning_
+  infixl 0 step-equational-reasoning
 
-  begin_ : ∀ {A} {x y : A} → x ≡ y → x ≡ y
-  begin x≡y = x≡y
+  equational-reasoning_ : ∀ {A} (x : A) → x ≡ x
+  equational-reasoning x = refl
+  
+  step-equational-reasoning :
+    ∀ {A} {x y : A} → (x ≡ y) → (u : A) → (y ≡ u) → (x ≡ u)
+  step-equational-reasoning x≡y _ y≡u = trans x≡y y≡u
 
-  _≡⟨⟩_ : ∀ {A} (x : A) {y : A} → x ≡ y → x ≡ y
-  x ≡⟨⟩ x≡y = x≡y
-
-  _≡⟨_⟩_ : ∀ {A} (x : A) {y z : A} → x ≡ y → y ≡ z → x ≡ z
-  x ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
-
-  _∎ : ∀ {A} (x : A) → x ≡ x
-  x ∎ = refl
-
-  open ≡-Reasoning
+  syntax step-equational-reasoning p z q = p ≡ z by q
